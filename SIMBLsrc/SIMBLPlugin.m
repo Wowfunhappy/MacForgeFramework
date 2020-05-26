@@ -13,13 +13,39 @@
     return [[SIMBLPlugin alloc] initWithPath:path];
 }
 
-- (SIMBLPlugin*) initWithPath:(NSString*)path
+- (NSString*) path
+{
+    return path;
+}
+
+- (void) setPath:(NSString*)_path
+{
+    if (_path)
+        path = [_path copy];
+    else
+        path = _path;
+}
+
+- (NSDictionary*) info
+{
+    return info;
+}
+
+- (void) setInfo:(NSDictionary*)_info
+{
+    if (info == _info)
+        return;
+    
+    info = _info;
+}
+
+- (SIMBLPlugin*) initWithPath:(NSString*)_path
 {
     if (!(self = [super init]))
         return nil;
-    self.path = path;
-
-    NSArray* bundlePathParts = @[path, @"Contents", @"Info.plist"];
+    [self setPath:_path];
+    
+    NSArray* bundlePathParts = [NSArray arrayWithObjects:_path, @"Contents", @"Info.plist", nil];
     if (nil == bundlePathParts)
         return nil;
     NSString* bundlePath = [NSString pathWithComponents:bundlePathParts];
@@ -32,24 +58,24 @@
         NSLog(@"Unable to create dictionary from bundle at path '%@'", bundlePath);
         return nil;
     }
-    if (0 == bundleDict.count) {
+    if (0 == [bundleDict count]) {
         NSLog(@"Warning: Empty dictionary created from bundle at path '%@'", bundlePath);
         return nil;
     }
-
-    self.info = bundleDict;
+    
+    [self setInfo:bundleDict];
     return self;
-
+    
 }
 
 - (NSString*) bundleIdentifier
 {
-    return _info[@"CFBundleIdentifier"];
+    return [info objectForKey:@"CFBundleIdentifier"];
 }
 
 - (id) objectForInfoDictionaryKey:(NSString*)key
 {
-    return _info[key];
+    return [info objectForKey:key];
 }
 
 - (NSString*) _dt_info
@@ -73,9 +99,17 @@
     if (name != nil)
         return name;
     else
-        return self.path.lastPathComponent;
+        return [[self path] lastPathComponent];
 }
 
+- (void) dealloc
+{
+//    if (path)
+//        [path release];
+//    if (info)
+//        [info release];
+//    [super dealloc];
+}
 
 @end
 
@@ -102,3 +136,4 @@
 }
 
 @end
+

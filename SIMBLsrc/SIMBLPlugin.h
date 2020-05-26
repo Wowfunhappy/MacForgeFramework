@@ -7,28 +7,36 @@
 #import <Foundation/Foundation.h>
 
 @interface SIMBLPlugin : NSObject
-@property (nonatomic, copy) NSString *path;
-@property (nonatomic, strong) NSDictionary *info;
+{
+    NSString* path;
+    NSDictionary* info;
+}
 
-+ (SIMBLPlugin*) bundleWithPath:(NSString*)path;
-- (SIMBLPlugin*) initWithPath:(NSString*)path;
++ (SIMBLPlugin*) bundleWithPath:(NSString*)_path;
+- (SIMBLPlugin*) initWithPath:(NSString*)_path;
+- (void) dealloc;
 
-@property (nonatomic, readonly, copy) NSString *bundleIdentifier;
+- (NSString*) path;
+- (void) setPath:(NSString*)_path;
+- (NSDictionary*) info;
+- (void) setInfo:(NSDictionary*)_info;
+- (NSString*) bundleIdentifier;
 - (id) objectForInfoDictionaryKey:(NSString*)key;
 
-@property (nonatomic, readonly, copy) NSString *_dt_info;
-@property (nonatomic, readonly, copy) NSString *_dt_version;
-@property (nonatomic, readonly, copy) NSString *_dt_bundleVersion;
-@property (nonatomic, readonly, copy) NSString *_dt_name;
+- (NSString*) _dt_info;
+- (NSString*) _dt_version;
+- (NSString*) _dt_bundleVersion;
+- (NSString*) _dt_name;
 
 @end
 
 
 @interface NSBundle (SIMBLCocoaExtensions)
 
-@property (nonatomic, readonly, copy) NSString *_dt_info;
-@property (nonatomic, readonly, copy) NSString *_dt_version;
-@property (nonatomic, readonly, copy) NSString *_dt_bundleVersion;
-@property (nonatomic, readonly, copy) NSString *_dt_name;
+- (NSString*) _dt_info;
+- (NSString*) _dt_version;
+- (NSString*) _dt_bundleVersion;
+- (NSString*) _dt_name;
 
 @end
+
